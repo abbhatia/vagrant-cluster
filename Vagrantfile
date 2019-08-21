@@ -1,7 +1,7 @@
  
 pocd_nodes = [
-	{ :host => "cm571-template", :ip => "10.10.45.9", :box => "bento/centos-7.6", :ram => 1024, :cpu => 1, :gui => false },
-	{ :host => "cm571-template2", :ip => "10.10.45.10", :box => "bento/centos-7.6", :ram => 2048, :cpu => 2, :gui => false },
+	{ :host => "cm571-template", :ip => "192.168.0.76", :box => "bento/centos-7.6", :ram => 1024, :cpu => 1, :gui => false },
+	#{ :host => "cm571-template2", :ip => "10.10.45.10", :box => "bento/centos-7.6", :ram => 2048, :cpu => 2, :gui => false },
 ]
 
 
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
 			pocd_config.vm.box = pocd_node[:box]
 			#pocd_config.vm.box_version = "1905.1"
 			
-			pocd_config.vm.network "private_network", ip: pocd_node[:ip], :netmask => "255.255.255.0"
+			pocd_config.vm.network "public_network", bridge: "enp2s0f1", ip: pocd_node[:ip], :netmask => "255.255.255.0"
 			pocd_config.vm.hostname = "#{pocd_node[:host]}.#{varDomain}"
 			# pocd_config.vm.hostname = pocd_node[:host] + "." + varDomain
 
