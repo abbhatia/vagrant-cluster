@@ -2,10 +2,8 @@
 
 sudo yum -y install ntp
 sudo chkconfig ntpd on
-sudo /etc/init.d/ntpd start
+sudo service ntpd start
 
-sudo chkconfig iptables off
-sudo /etc/init.d/iptables stop
 sudo setenforce 0
 
 sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
