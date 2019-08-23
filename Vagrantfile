@@ -36,6 +36,8 @@ cat /vagrant/certificates/ansible_lab.pub >> /home/vagrant/.ssh/authorized_keys
 SCRIPT
 
 $ansiblescript = <<SCRIPT
+sudo yum update -y
+sudo yum install epel-release -y
 sudo yum install ansible git -y
 mkdir /home/vagrant/workspace
 cd /home/vagrant/workspace
