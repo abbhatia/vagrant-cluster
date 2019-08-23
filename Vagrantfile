@@ -10,6 +10,12 @@ pocd_nodes = [
 varDomain = "poc-d.internal"
 varRepository = "repository/"
 
+varHostEntries = ""
+pocd_nodes.each do |pocd_node|
+	varHostEntries << "#{pocd_node[:ip]} #{pocd_node[:host]}.#{varDomain} #{pocd_node[:host]}\n"
+end
+
+puts varHostEntries
 #global script
 $global = <<SCRIPT
 
@@ -37,17 +43,19 @@ Host dell*
    UserKnownHostsFile=/dev/null
 EOF
 
-#populate /etc/hosts
-for x in {11..#{10+numnodes}}; do
-  grep #{baseip}.${x} /etc/hosts &>/dev/null || {
-      echo #{baseip}.${x} node${x##?} | sudo tee -a /etc/hosts &>/dev/null
-  }
-done
-
 #end script
 SCRIPT
 
 prefix="dell"
+
+$etchosts = <<SCRIPT
+#!/bin/bash
+cat > /etc/hosts <<EOF
+127.0.0.1       localhost
+10.10.47.1      host.#{varDomain} host
+#{varHostEntries}
+EOF
+SCRIPT
 
 Vagrant.configure("2") do |config|
 
@@ -83,7 +91,15 @@ Vagrant.configure("2") do |config|
 				group: "vagrant"
 
 		    #pocd_config.vm.provision :shell, :path => "java/provision_for_java.sh"
-		    pocd_config.vm.provision "shell", privileged: false, inline: $global
+			pocd_config.vm.provision "shell", privileged: false, inline: $global
+
+			pocd_config.vm.provision :shell, :inline => $etchosts
+		
+			pocd_config.vm.provision :shell, :path => "os-tuning/provision_for_print_os.sh"
+			pocd_config.vm.provision :shell, :path => "os-tuning/provision_for_os_settings.sh"
+			pocd_config.vm.provision :shell, :path => "os-tuning/provision_for_os.sh"
+			pocd_config.vm.provision :shell, :path => "os-tuning/provision_for_print_os.sh"
+				
 
 		end
 	end		
