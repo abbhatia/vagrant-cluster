@@ -1,4 +1,4 @@
 repository/oracle-java-sdk-jdk/jdk-8u101-linux-x64.rpm
 .vagrant/**
-
+*.swp
 
