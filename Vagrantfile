@@ -1,17 +1,16 @@
-varAnsibleController = "ansible-controller"
+varAnsibleController = "ansible-controller-1"
 varPrefixNodes = "dell"
 
 varRamAnsible=4096
 varRamNode=6144
 
 varDomain = "ab.internal"
-varRepository = "D:/GoogleDrive/mydocs/udemy_vagrant_cloudera/1_create_base_boxes/REPOSITORY"
 
 nodes = [
-	{ :host => "#{varAnsibleController}",  :ip => "192.168.22.10", :box => "bento/centos-7.6", :ram => varRamAnsible, :cpu => 2, :gui => false },
-	{ :host => "#{varPrefixNodes}-node-1",  :ip => "192.168.22.12", :box => "bento/centos-7.6", :ram => varRamNode, :cpu => 2, :gui => false },
-	{ :host => "#{varPrefixNodes}-node-2",  :ip => "192.168.22.13", :box => "bento/centos-7.6", :ram => varRamNode, :cpu => 2, :gui => false },
-	{ :host => "#{varPrefixNodes}-node-3",  :ip => "192.168.22.14", :box => "bento/centos-7.6", :ram => varRamNode, :cpu => 2, :gui => false },
+#	{ :host => "#{varAnsibleController}",  :ip => "192.168.0.71", :box => "ansible-controller", :ram => varRamAnsible, :cpu => 2, :gui => false },
+	{ :host => "#{varPrefixNodes}-node-1",  :ip => "192.168.0.72", :box => "bento/centos-7.6", :ram => 32768, :cpu => 4, :gui => false },
+	{ :host => "#{varPrefixNodes}-node-2",  :ip => "192.168.0.73", :box => "bento/centos-7.6", :ram => varRamNode, :cpu => 2, :gui => false },
+	{ :host => "#{varPrefixNodes}-node-3",  :ip => "192.168.0.74", :box => "bento/centos-7.6", :ram => varRamNode, :cpu => 2, :gui => false },
 ]
 
 varHostEntries = ""
@@ -84,7 +83,7 @@ Vagrant.configure("2") do |config|
 		pocd_config.vm.provision :shell, :path => "os-tuning/provision_for_print_os.sh"
 				
 		if node[:host] == varAnsibleController
-			pocd_config.vm.provision "shell", inline:  $ansiblescript, privileged: false
+			#pocd_config.vm.provision "shell", inline:  $ansiblescript, privileged: false
 		else
 			pocd_config.vm.provision "shell", inline:  $nodescript
 		end
